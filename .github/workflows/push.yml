@@ -16,44 +16,26 @@ jobs:
     - name: Install jq
       run: sudo apt-get install jq
     
-    - name: Create DB
+    - name: Send Query and Check Result
       run: |
-        curl -X 'POST' \
-        --insecure \
-        -v \
+      result=$(curl -X 'POST' \
         "https://${{ secrets.ENV_HOST}}:8443/qs/systems/local/queries" \
         -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
         -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
         -H "Content-Type: application/json" \
         -d '{
-              "query": "CREATE DATABASE teddy_retailers_ci AS PERMANENT = 110e6;",
+              "query": "SELECT count(*) FROM teddy_retailers_ci.new_online_store WHERE transaction_id = 1;",
               "format": "array",
               "includeColumns": true
-            }' 
+            }' \
+        --insecure) 
+        
+      count=$(echo $result | jq -r '.results[0].data[0][0]')
+      echo $count
 
-    - name: Create table
-      run: |
-        curl -X 'POST' \
-        "https://${{ secrets.ENV_HOST }}:8443/qs/systems/local/queries" \
-        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
-        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
-        -H "Content-Type: application/json" \
-        -d '{
-              "query": "CREATE TABLE teddy_retailers_ci.new_online_store ( transaction_id INT NOT NULL PRIMARY KEY, name_customer VARCHAR(100), surname VARCHAR(100), email VARCHAR(255), order_status VARCHAR(50), name_product VARCHAR(255), price_cents INT );",
-              "format": "array",
-              "includeColumns": true
-            }'
-    
-    - name: Load data
-      run: |
-        curl -X 'POST' \
-        "https://${{ secrets.ENV_HOST }}:8443/qs/systems/local/queries" \
-        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
-        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
-        -H "Content-Type: application/json" \
-        -d '{
-               "query": "INSERT INTO teddy_retailers_ci.new_online_store (transaction_id, name_customer, surname, email, order_status, name_product, price_cents) VALUES (1, "John", "Doe", "john.doe@example.com", "Shipped", "Laptop", 120000);",
-              "format": "array",
-              "includeColumns": true
-            }'
-    
+      if [[ "$count" == "1" ]]; then
+        echo "Test Passed"
+      else
+        echo "Test Failed"
+        exit 1
+      fi

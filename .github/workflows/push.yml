@@ -15,25 +15,11 @@ jobs:
     
     - name: Install jq
       run: sudo apt-get install jq
-
-    - name: Start Server
-      run: |
-        curl -X 'PATCH' \
-          "https://api.clearscape.teradata.com/environments/${{ secrets.ENV_NAME }}" \
-          -H 'accept: application/json' \
-          -H "Authorization: Bearer ${{ secrets.API_KEY }}" \
-          -H 'Content-Type: application/json' \
-          -d '{
-              "operation": "start"
-              }'
-    
-    - name: Print Host URL
-      run: echo  "https://${{ vars.ENV_HOST }}:8443/qs/systems/local/queries"
     
     - name: Create DB
       run: |
         curl -X 'POST' \
-        "https://${{ vars.ENV_HOST }}:8443/qs/systems/local/queries"\
+        "https://cicdtest-wteuh1djm0q9u4x5.env.clearscape.teradata.com:8443/qs/systems/local/queries"\
         -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
         -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
         -H "Content-Type: application/json" \

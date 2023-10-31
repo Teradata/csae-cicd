@@ -21,7 +21,7 @@ jobs:
         curl -X 'POST' \
         --insecure \
          -v \
-        "https://cicdtest-wteuh1djm0q9u4x5.env.clearscape.teradata.com:8443/qs/systems/local/queries"\
+        "https://cicdtest-wteuh1djm0q9u4x5.env.clearscape.teradata.com:1443/systems/local/queries"\
         -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
         -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
         -H "Content-Type: application/json" \

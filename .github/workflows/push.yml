@@ -77,7 +77,7 @@ jobs:
               "format": "array",
               "includeColumns": true
             }' \
-        --insecure) # The --insecure flag is added to skip certificate verification. Use it carefully.
+        --insecure) 
 
       # Assume the expected result is a JSON object that includes something like: {"data": [[1]]}
       count=$(echo $result | jq -r '.results[0].data[0][0]')
@@ -88,4 +88,3 @@ jobs:
         echo "Test Failed"
         exit 1
       fi
-    

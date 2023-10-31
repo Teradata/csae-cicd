@@ -15,7 +15,35 @@ jobs:
     
     - name: Install jq
       run: sudo apt-get install jq
-    
+
+    - name: Create DB
+      run: |
+        curl -X 'POST' \
+        --insecure \
+        -v \
+        "https://${{ secrets.ENV_HOST}}:8443/qs/systems/local/queries" \
+        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
+        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
+        -H "Content-Type: application/json" \
+        -d '{
+              "query": "CREATE DATABASE teddy_retailers_ci AS PERMANENT = 110e6;",
+              "format": "array",
+              "includeColumns": true
+            }'
+
+    - name: Create table
+      run: |
+        curl -X 'POST' \
+        "https://${{ secrets.ENV_HOST }}:8443/qs/systems/local/queries" \
+        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
+        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
+        -H "Content-Type: application/json" \
+        -d '{
+              "query": "CREATE TABLE teddy_retailers_ci.new_online_store ( transaction_id INT NOT NULL PRIMARY KEY, name_customer VARCHAR(100), surname VARCHAR(100), email VARCHAR(255), order_status VARCHAR(50), name_product VARCHAR(255), price_cents INT );",
+              "format": "array",
+              "includeColumns": true
+            }' 
+
     - name: Load data
       run: |
         curl -X 'POST' \
@@ -52,3 +80,33 @@ jobs:
           echo "Test Failed"
           exit 1
         fi
+    
+    - name: Clean DB
+      run: |
+        curl -X 'POST' \
+        --insecure \
+        -v \
+        "https://${{ secrets.ENV_HOST}}:8443/qs/systems/local/queries" \
+        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
+        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
+        -H "Content-Type: application/json" \
+        -d '{
+              "query": "DELETE DATABASE teddy_retailers_ci ALL;",
+              "format": "array",
+              "includeColumns": true
+            }'
+      
+    - name: DROP DB
+      run: |
+        curl -X 'POST' \
+        --insecure \
+        -v \
+        "https://${{ secrets.ENV_HOST}}:8443/qs/systems/local/queries" \
+        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
+        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
+        -H "Content-Type: application/json" \
+        -d '{
+              "query": "DROP DATABASE teddy_retailers_ci;",
+              "format": "array",
+              "includeColumns": true
+            }'

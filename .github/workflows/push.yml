@@ -26,7 +26,10 @@ jobs:
           -d '{
               "operation": "start"
               }'
-  
+    
+    - name: Print Host URL
+      run: echo  "https://${{ vars.ENV_HOST }}:8443/qs/systems/local/queries"
+    
     - name: Create DB
       run: |
         curl -X 'POST' \

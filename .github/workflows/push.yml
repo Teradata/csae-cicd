@@ -30,8 +30,6 @@ jobs:
     - name: Create DB
       run: |
         curl -X 'POST' \
-        --insecure \
-        -v \
         "https://${{ secrets.ENV_HOST}}:8443/qs/systems/local/queries" \
         -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
         -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
@@ -95,8 +93,6 @@ jobs:
     - name: Clean DB
       run: |
         curl -X 'POST' \
-        --insecure \
-        -v \
         "https://${{ secrets.ENV_HOST}}:8443/qs/systems/local/queries" \
         -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
         -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
@@ -110,8 +106,6 @@ jobs:
     - name: DROP DB
       run: |
         curl -X 'POST' \
-        --insecure \
-        -v \
         "https://${{ secrets.ENV_HOST}}:8443/qs/systems/local/queries" \
         -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
         -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \

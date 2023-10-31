@@ -29,28 +29,4 @@ jobs:
               "includeColumns": true
             }' 
 
-    - name: Create table
-      run: |
-        curl -X 'POST' \
-        "https://${{ secrets.ENV_HOST }}:8443/qs/systems/local/queries"\
-        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
-        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
-        -H "Content-Type: application/json" \
-        -d '{
-              "query": "CREATE TABLE teddy_retailers_ci.new_online_store ( transaction_id INT NOT NULL PRIMARY KEY, name_customer VARCHAR(100), surname VARCHAR(100), email VARCHAR(255), order_status VARCHAR(50), name_product VARCHAR(255), price_cents INT );",
-              "format": "array",
-              "includeColumns": true
-            }'
-    
-    - name: Load data
-      run: |
-        curl -X 'POST' \
-        "https://${{ secrets.ENV_HOST }}:8443/qs/systems/local/queries"\
-        -H "Authorization: Basic ${{ secrets.ENV_AUTH }}" \
-        -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
-        -H "Content-Type: application/json" \
-        -d '{
-               "query": "INSERT INTO teddy_retailers_ci.new_online_store (transaction_id, name_customer, surname, email, order_status, name_product, price_cents) VALUES (1, "John", "Doe", "john.doe@example.com", "Shipped", "Laptop", 120000);",
-              "format": "array",
-              "includeColumns": true
-            }'
+  

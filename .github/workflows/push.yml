@@ -16,6 +16,17 @@ jobs:
     - name: Install jq
       run: sudo apt-get install jq
 
+    - name: Start Server
+      run: |
+        curl -X 'PATCH' \
+          "https://api.clearscape.teradata.com/environments/${{ secrets.ENV_NAME }}" \
+          -H 'accept: application/json' \
+          -H "Authorization: Bearer ${{ secrets.API_KEY }}" \
+          -H 'Content-Type: application/json' \
+          -d '{
+              "operation": "start"
+              }'
+
     - name: Create DB
       run: |
         curl -X 'POST' \
@@ -110,3 +121,14 @@ jobs:
               "format": "array",
               "includeColumns": true
             }'
+
+    - name: Stop Server
+      run: |
+        curl -X 'PATCH' \
+          "https://api.clearscape.teradata.com/environments/${{ secrets.ENV_NAME }}" \
+          -H 'accept: application/json' \
+          -H "Authorization: Bearer ${{ secrets.API_KEY }}" \
+          -H 'Content-Type: application/json' \
+          -d '{
+              "operation": "stop"
+              }'

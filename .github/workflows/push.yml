@@ -24,7 +24,7 @@ jobs:
         -H "Accept: application/vnd.com.teradata.rest-v1.0+json" \
         -H "Content-Type: application/json" \
         -d '{
-                "query": "INSERT INTO teddy_retailers_ci.new_online_store (transaction_id, name_customer, surname, email, order_status, name_product, price_cents) VALUES (1, "John", "Doe", "john.doe@example.com", "Shipped", "Laptop", 120000);",
+              "query": "INSERT INTO teddy_retailers_ci.new_online_store (transaction_id, name_customer, surname, email, order_status, name_product, price_cents) VALUES (1, '\''John'\'', '\''Doe'\'', '\''john.doe@example.com'\'', '\''Shipped'\'', '\''Laptop'\'', 120000);",
               "format": "array",
               "includeColumns": true
             }'

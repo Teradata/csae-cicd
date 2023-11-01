@@ -52,4 +52,5 @@ The workflows subdirectory of the .github contains a sample workflow that:
     - Will validate the result of the query
     - Will clean the data
     - Will stop the environment
-- After the action completes successfully you'll see the following results.
+- After the action completes successfully you'll see the following results. 
+![Example of successful run](/etc/Completed.PNG)

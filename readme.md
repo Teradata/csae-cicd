@@ -38,7 +38,7 @@ The workflows subdirectory of the .github contains a sample workflow that:
 - API_KEY (Your ClearScape Analytics Experience API Key)
 - ENV_NAME (Your Environment Name)
 - ENV_HOST (Your Environment Host URL)
-- ENV_AUTH (The base64 encoding of the following string "demo_user:<your environment password>")
+- ENV_AUTH (The base64 encoding of the following string "demo_user:your_environment_password")
 ![Example of setting the environment secrets](/etc/ENV_Setting.PNG)
 
 ### Push code to main
